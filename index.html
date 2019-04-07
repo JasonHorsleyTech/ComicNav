@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <script src="ComicNav.js"></script>
+    <script>
+        // Attach to HEAD of document. (no jquery cause not everyone)
+        document.addEventListener("DOMContentLoaded", (event) => {
+            // Attach to a known site
+            new ComicNav("samandfuzzy");
+
+            // Attach to known site with preference modifications
+            new ComicNav("samandfuzzy", {
+                requiredKey: false
+            });
+
+            // Attach to unknwon site
+            new ComicNav("newcomic", {
+                // assuming <a id='#nextBtn' href='newcomic/128.html' />
+                nextQuery: "#nextBtn",
+                // (gets passed into querySelector, so any CSS type selection you have)
+                // https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
+                prevQuery: "#prevBtn",
+                // require key code XX before left/right navigation enabled
+                // https://keycode.info/
+                requiredKey: 40
+            });
+        });
+    </script>
+</head>
+
+</html>
