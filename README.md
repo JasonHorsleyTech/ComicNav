@@ -6,12 +6,12 @@ Simple JS to attach the right/left arrow keys to the Next and Previous comic but
 
 ### Base
 
-Include the minified script files in your head, or download the full version and include on your local (both in src)
+Download src/ComicNav.js or src/ComicNav.js.min to your server, and load in your head.
 
 ```html
 <head>
     <!-- Link to latest minified version -->
-    <script src="https://github.com/JasonHorsleyTech/ComicNav/blob/master/src/ComicNav.js.min"></script>
+    <script src="path/to/ComicNav.js.min"></script>
 
     <!-- If you have jQuery -->
     <script>
