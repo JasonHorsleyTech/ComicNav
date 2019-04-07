@@ -15,7 +15,6 @@ class ComicNav {
                 this.nextURL !== window.location.href) {
                 window.location.href = this.nextURL;
             } else if (event.keyCode === this.props.requiredKey) {
-                // Using arrow keys to read, probably using the l
                 this.requiredKeyPressed = true;
             }
         });
@@ -25,8 +24,8 @@ class ComicNav {
             "samandfuzzy": {
                 nextQuery: ".next-page a",
                 prevQuery: ".prev-page a",
-                // Comics usually tall... TODO: Figure out early stuff??
-                requiredKey: 40
+                // Comics usually tall... TODO: Figure out early years??
+                // requiredKey: 40
             },
             "xkcd": {
                 prevQuery: "a[rel=prev]",
@@ -37,7 +36,6 @@ class ComicNav {
                 nextQuery: ".btn.btnNext",
             },
             // Scary-go-round: Already has one
-            // Qwantz
             "qwantz": {
                 prevQuery: "a[rel=prev]",
                 nextQuery: "a[rel=prev]",
@@ -75,10 +73,10 @@ class ComicNav {
          *          - nextQuery:        arg for document.querySelector to find the next comic href
          *          - requiredKey:      keycode for a key that MUST be pressed first before left/right arrow nav enabled
          */
-        if (!site && !preferences) {
-            console.info("Missing site and preferences arguments. For usage, please checkout");
-            console.info("https://github.com/JasonHorsleyTech/ComicNav");
-        } else {
+        try {
+            if (!site && !preferences) {
+                throw 1
+            }
             // In case
             this.site = site;
             /*
@@ -91,30 +89,43 @@ class ComicNav {
                 And I'm using Object.assign instead of a tunary because someone might only supply a preference override, not the entire expected object
                     new ComicNav("muhsite", {requireKey: 40}); <-- No prev/next query strings, use known/default.
             */
-            this.props = Object.assign(getSiteSpecifics(site), preferences);
-        }
-        this.listener = false; // key down listener for navigation
+            let defaults = this.getSiteSpecifics(site.toLowerCase());
+            this.props = Object.assign(defaults, preferences);
 
-        // Almost all sites use one of these.
-        let nextAnchor = document.querySelector(this.props.nextQuery);
-        let prevAnchor = document.querySelector(this.props.prevQuery);
+            // key down listener for navigation
+            this.listener = false; 
 
-        if (nextAnchor === null || prevAnchor === null) {
-            let notFound;
+            // Almost all sites use queryable a tags with next/prev hrefs.
+            let nextAnchor = document.querySelector(this.props.nextQuery);
+            let prevAnchor = document.querySelector(this.props.prevQuery);
+
             if (nextAnchor === null && prevAnchor === null) {
-                notFound = "elements " + this.props.nextQuery + " and " + this.props.prevQuery;
-            } else {
-                notFound = (nextAnchor === null) ? "element " + this.props.nextQuery : "element " + this.props.prevQuery
+                throw 2
             }
-            console.error("ComicNav.js -- Cannot attach arrow navigation, " + notFound + " not found on site");
-        } else {
-            this.nextURL = (nextAnchor.href) ? nextAnchor.href : false;
-            this.prevURL = (prevAnchor.href) ? prevAnchor.href : false;
+
+            this.nextURL = (nextAnchor && nextAnchor.href) ? nextAnchor.href : false;
+            this.prevURL = (prevAnchor && prevAnchor.href) ? prevAnchor.href : false;
 
             // If no passed in required key, or a bad pass, assume the requirement has been met.
             this.requiredKeyPressed = (typeof this.props.requiredKey == "number") ? false : true;
 
             this.attach();
+        } catch (errCode) {
+            console.error("ComicNav.js Constructor error: ");
+            switch (errCode) {
+                case 1:
+                    console.info("Missing site and preferences arguments. For usage, please checkout");
+                    console.info("https://github.com/JasonHorsleyTech/ComicNav");
+                    break;
+                case 2:
+                    console.error("Next/Previous elements not found on site, or both are missing href values. Using");
+                    console.error("this.props.nextQuery: " + this.props.nextQuery);
+                    console.error("this.props.prevQuery: " + this.props.prevQuery);
+                    break;
+                default:
+                    console.info("Not sure what happened, but one of us did something wrong.");
+                    console.info("https://github.com/JasonHorsleyTech/ComicNav");
+            }
         }
     }
 }

@@ -1,7 +1,8 @@
 <html>
 
 <head>
-    <script src="ComicNav.js"></script>
+    <title>Example comic page</title>
+    <script src="src/ComicNav.js"></script>
     <script>
         // Attach to HEAD of document. (no jquery cause not everyone)
         document.addEventListener("DOMContentLoaded", (event) => {
@@ -16,16 +17,26 @@
             // Attach to unknwon site
             new ComicNav("newcomic", {
                 // assuming <a id='#nextBtn' href='newcomic/128.html' />
-                nextQuery: "#nextBtn",
+                nextQuery: "a[rel=next]",
                 // (gets passed into querySelector, so any CSS type selection you have)
                 // https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector
-                prevQuery: "#prevBtn",
-                // require key code XX before left/right navigation enabled
+                prevQuery: "a[rel=prev]",
+                // require key code XX before left/right navigation enabled 
+                // Set to false or leave out prop for NO such requirement
                 // https://keycode.info/
                 requiredKey: 40
             });
         });
     </script>
 </head>
+
+<body>
+    <div class="main">
+        <img src='comics/114.jpg' />
+
+        <a href="comic/113.html" rel="prev" />
+        <a href="comic/115.html" rel="next" />
+    </div>
+</body>
 
 </html>
