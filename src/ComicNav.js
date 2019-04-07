@@ -1,4 +1,4 @@
-// Using https://www.minifier.org/, TODO: Set up grunt
+// https://github.com/JasonHorsleyTech/ComicNav - MIT
 class ComicNav {
     detach() {
         // Maybe?
@@ -47,7 +47,7 @@ class ComicNav {
                 prevQuery: "#previous a",
                 nextQuery: "#next a",
             },
-            // SMBC: already. jumpbar.js? Hiveworks?
+            // SMBC: already. jumpbar.js?
             "octopuspie": {
                 prevQuery: "a[rel=prev]",
                 nextQuery: "a[rel=next]",
