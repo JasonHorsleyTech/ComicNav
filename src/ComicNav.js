@@ -1,3 +1,4 @@
+// Using https://www.minifier.org/, TODO: Set up grunt
 class ComicNav {
     detach() {
         // Maybe?
